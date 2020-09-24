@@ -1,0 +1,10 @@
+.wallet-pair {
+  margin: 100px 0 0 20px;
+}
+
+.wallet-left,
+.wallet-right {
+  border-style: dashed;
+  border-color: #d9d9d9;
+  color: rgba(0, 0, 0, 0.85);
+}
