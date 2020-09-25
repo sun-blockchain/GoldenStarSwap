@@ -1,8 +1,8 @@
 require('dotenv').config();
 const { TruffleProvider } = require('@harmony-js/core');
 
-const testnet_mnemonic = process.env.OPERATOR_MNEMONIC;
-const testnet_private_key = process.env.OPERATOR_PRIVATE_KEY;
+const testnet_mnemonic = process.env.HMY_OPERATOR_MNEMONIC;
+const testnet_private_key = process.env.HMY_OPERATOR_PRIVATE_KEY;
 const testnet_url = process.env.TESTNET_0_URL;
 
 gasLimit = process.env.GAS_LIMIT;
