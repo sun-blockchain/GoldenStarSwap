@@ -18,7 +18,7 @@ const options = {
 const HmyBridge = require('./build/contracts/HmyBridge.json');
 const hmyBridgeAddress = HmyBridge.networks['2'].address;
 
-exports.unlockOne = async function (price, receiver, receiptId) {
+exports.unlockOne = async function (amount, price, receiver, receiptId) {
   try {
     const hmyBridgeContract = hmy.contracts.createContract(HmyBridge.abi, hmyBridgeAddress);
     hmyBridgeContract.wallet.addByPrivateKey(process.env.HMY_OPERATOR_PRIVATE_KEY);
@@ -28,7 +28,7 @@ exports.unlockOne = async function (price, receiver, receiptId) {
     });
 
     await hmyBridgeContract.wallet.signTransaction(unlockTx);
-    await hmyBridgeContract.methods.unlockOne(price, receiver, receiptId).send(options);
+    await hmyBridgeContract.methods.unlockOne(amount, price, receiver, receiptId).send(options);
     return;
   } catch (err) {
     throw err;

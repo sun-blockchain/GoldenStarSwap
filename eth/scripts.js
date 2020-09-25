@@ -11,63 +11,74 @@ const EthBridge = require('./build/contracts/EthBridge.sol');
 const ethBridgeAddress = EthBridge.networks['3'].address;
 const ethBridgeContract = new web3.eth.Contract(EthBridge.abi, ethBridgeAddress);
 
-const sleep = duration => new Promise(res => setTimeout(res, duration));
-
 const AVG_BLOCK_TIME = 20 * 1000;
 const BLOCK_TO_FINALITY = 10;
 
-exports.checkERC20TokenBalance = async function (erc20TokenAddress, ethUserAddr, amount) {
-  let erc20Contract = new web3.eth.Contract(ERC20.abi, erc20TokenAddress);
-  let result = await erc20Contract.methods.balanceOf(ethUserAddr).call();
+const sleep = duration => new Promise(res => setTimeout(res, duration));
 
-  if (result < amount) {
+exports.checkBalanceAndApproveEthManger = async function (
+  ethUserPrivateKey,
+  erc20TokenAddress,
+  amount
+) {
+  let ethUserAccount = web3.eth.accounts.privateKeyToAccount(ethUserPrivateKey);
+  web3.eth.accounts.wallet.add(ethUserAccount);
+  web3.eth.defaultAccount = ethUserAccount.address;
+
+  let erc20Contract = new web3.eth.Contract(ERC20.abi, erc20TokenAddress);
+  let balance = await erc20Contract.methods.balanceOf(ethUserAccount.address).call();
+
+  if (balance < amount) {
     throw new Error('Your balance not enough to transfer!');
   }
+
+  await erc20Contract.methods.approve(ethManagerAddress, amount).send({
+    from: ethUserAccount.address,
+    gas: process.env.ETH_GAS_LIMIT,
+    gasPrice: new BN(await web3.eth.getGasPrice()).mul(new BN(1))
+  });
   return;
 };
 
-exports.approveEthManger = async function (ethUserPrivateKey, erc20TokenAddress, amount) {
+exports.lockERC20Token = async function (
+  erc20TokenAddress,
+  ethUserPrivateKey,
+  amount,
+  hmyUserAddress
+) {
   try {
     let ethUserAccount = web3.eth.accounts.privateKeyToAccount(ethUserPrivateKey);
     web3.eth.accounts.wallet.add(ethUserAccount);
     web3.eth.defaultAccount = ethUserAccount.address;
 
-    let erc20Contract = new web3.eth.Contract(ERC20.abi, erc20TokenAddress);
-
-    await erc20Contract.methods.approve(ethManagerAddress, amount).send({
-      from: ethUserAccount.address,
-      gas: process.env.ETH_GAS_LIMIT,
-      gasPrice: new BN(await web3.eth.getGasPrice()).mul(new BN(1))
-    });
-    return;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-};
-
-exports.lockERC20TokenFor = async function (
-  erc20TokenAddress,
-  ethUserAddress,
-  amount,
-  hmyUserAddress
-) {
-  try {
-    let ethOperatorAccount = web3.eth.accounts.privateKeyToAccount(
-      process.env.OPERATOR_PRIVATE_KEY
-    );
-    web3.eth.accounts.wallet.add(ethOperatorAccount);
-    web3.eth.defaultAccount = ethOperatorAccount.address;
-
     let transaction = await ethBridgeContract.methods
-      .lockTokenFor(erc20TokenAddress, ethUserAddress, amount, hmyUserAddress)
+      .lockToken(erc20TokenAddress, amount, hmyUserAddress)
       .send({
-        from: ethOperatorAccount.address,
+        from: ethUserAccount.address,
         gas: process.env.ETH_GAS_LIMIT,
         gasPrice: new BN(await web3.eth.getGasPrice()).mul(new BN(1))
       });
 
     return transaction.events.Locked;
+  } catch (err) {
+    throw err;
+  }
+};
+
+exports.lockETH = async function (ethUserPrivateKey, amount, hmyUserAddress) {
+  try {
+    let ethUserAccount = web3.eth.accounts.privateKeyToAccount(ethUserPrivateKey);
+    web3.eth.accounts.wallet.add(ethUserAccount);
+    web3.eth.defaultAccount = ethUserAccount.address;
+
+    let transaction = await ethBridgeContract.methods.lockEth(amount, hmyUserAddress).send({
+      from: ethUserAccount.address,
+      value: amount,
+      gas: process.env.ETH_GAS_LIMIT,
+      gasPrice: new BN(await web3.eth.getGasPrice()).mul(new BN(1))
+    });
+
+    return transaction.events.LockedETH;
   } catch (err) {
     throw err;
   }
