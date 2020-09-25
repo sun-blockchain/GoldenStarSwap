@@ -2,10 +2,20 @@ import React from 'react';
 import { Select, Button, Input, Col, Row, InputNumber, Divider } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExchangeAlt } from '@fortawesome/fontawesome-free-solid';
+import { useDispatch } from 'react-redux';
+import Token from 'constants/Token.js';
+import OneToken from 'icons/harmony.png';
+import { setSenderToken } from 'store/actions';
 import './index.css';
 const { Option } = Select;
 
 function SwapPair() {
+  const dispatch = useDispatch();
+
+  const changeToken = value => {
+    let tokenSender = Token.find(e => e.name === value);
+    dispatch(setSenderToken(tokenSender.address));
+  };
   return (
     <div className='swap-pair'>
       <Divider orientation='left'></Divider>
@@ -15,9 +25,12 @@ function SwapPair() {
             <Divider orientation='left'>Have</Divider>
             <Row gutter={[8, 8]}>
               <Col span={12}>
-                <Select defaultValue='eth' style={{ width: 120 }}>
-                  <Option value='eth'>Ethereum</Option>
-                  <Option value='one'>One</Option>
+                <Select defaultValue='LINK' onChange={changeToken} style={{ width: 120 }}>
+                  {Token.map((e, i) => (
+                    <Option key={i} value={e.name}>
+                      <img src={e.src} width={'20px'} alt='e.name'></img> {'  ' + e.name}
+                    </Option>
+                  ))}
                 </Select>
               </Col>
               <Col span={12}>
@@ -42,8 +55,10 @@ function SwapPair() {
             <Row gutter={[8, 8]}>
               <Col span={12}>
                 <Select defaultValue='one' style={{ width: 120 }}>
-                  <Option value='eth'>Ethereum</Option>
-                  <Option value='one'>One</Option>
+                  <Option value='one'>
+                    <img src={OneToken} width={'20px'} alt='one' />
+                    {' ONE'}
+                  </Option>
                 </Select>
               </Col>
               <Col span={12}>

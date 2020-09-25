@@ -1,9 +1,9 @@
 const Token = [
-  {
-    src: 'https://files.kyber.network/DesignAssets/tokens/eth.svg',
-    name: 'ETH',
-    address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-  },
+  // {
+  //   src: 'https://files.kyber.network/DesignAssets/tokens/eth.svg',
+  //   name: 'ETH',
+  //   address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+  // },
   {
     src: 'https://files.kyber.network/DesignAssets/tokens/knc.svg',
     name: 'KNC',
