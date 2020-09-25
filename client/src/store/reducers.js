@@ -20,7 +20,7 @@ const rootReducer = (state = initialState, action) => {
     case actions.SET_RECEIVER:
       return {
         ...state,
-        senderAddress: action.address
+        receiverAddress: action.address
       };
     case actions.SET_WEB3:
       return {
