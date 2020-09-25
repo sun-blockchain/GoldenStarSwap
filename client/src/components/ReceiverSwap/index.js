@@ -6,6 +6,8 @@ import { faExchangeAlt } from '@fortawesome/fontawesome-free-solid';
 import './index.css';
 function ReceiverSwap() {
   const receiverAddress = useSelector(state => state.receiverAddress);
+  const senderAddress = useSelector(state => state.senderAddress);
+  let disabledBtn = !(senderAddress && receiverAddress);
   return (
     <div className='receiver-swap'>
       <Divider orientation='left'>Receiver Address:</Divider>
@@ -19,7 +21,7 @@ function ReceiverSwap() {
           />
         </Col>
         <Col span={6} offset={6}>
-          <Button size='large' shape='round' className='btn-swap'>
+          <Button size='large' shape='round' className='btn-swap' disabled={disabledBtn}>
             <label className='swap-label'>Swap</label>{' '}
             <FontAwesomeIcon className='swap-icon' icon={faExchangeAlt} />
           </Button>
