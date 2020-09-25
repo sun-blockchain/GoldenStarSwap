@@ -1,0 +1,15 @@
+.receiver-address {
+  font-weight: bold !important;
+}
+.ant-btn.btn-swap {
+  display: block !important;
+  width: 100% !important;
+}
+
+.swap-icon {
+  float: right;
+}
+
+.swap-label {
+  float: left;
+}
