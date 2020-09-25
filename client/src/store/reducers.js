@@ -5,6 +5,7 @@ const initialState = {
   senderAddress: null,
   senderBalance: 0,
   senderType: '',
+  senderToken: '0xb4f7332ed719Eb4839f091EDDB2A3bA309739521',
 
   receiverAddress: null,
   receiverBalance: 0,
@@ -26,6 +27,21 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         web3: action.web3
+      };
+    case actions.SET_SENDER_TOKEN:
+      return {
+        ...state,
+        senderToken: action.tokenAddress
+      };
+    case actions.SET_SENDER_BALANCE:
+      return {
+        ...state,
+        senderBalance: action.balance
+      };
+    case actions.SET_RECEIVER_BALANCE:
+      return {
+        ...state,
+        receiverBalance: action.balance
       };
     default:
       return state;
