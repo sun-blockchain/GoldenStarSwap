@@ -1,9 +1,6 @@
 const HmyFunction = require('./hmy/scripts');
 const EthFunction = require('./eth/scripts');
 
-let Web3 = require('web3');
-let web3 = new Web3('https://ropsten.infura.io/v3/' + process.env.INFURA_PROJECT_ID);
-
 exports.transferERC20toONE = async function (
   ethUserPrivateKey, // eth sender
   hmyUserAddress, // hmy receiver
@@ -11,16 +8,11 @@ exports.transferERC20toONE = async function (
   amount
 ) {
   try {
-    let ethUserAccount = web3.eth.accounts.privateKeyToAccount(ethUserPrivateKey);
-    web3.eth.accounts.wallet.add(ethUserAccount);
-    web3.eth.defaultAccount = ethUserAccount.address;
+    await EthFunction.checkBalanceAndApproveEthManger(ethUserPrivateKey, erc20TokenAddress, amount);
 
-    await EthFunction.checkERC20TokenBalance(erc20TokenAddress, ethUserAccount.address, amount);
-    await EthFunction.approveEthManger(ethUserPrivateKey, erc20TokenAddress, amount);
-
-    let lockedEvent = await EthFunction.lockERC20TokenFor(
+    let lockedEvent = await EthFunction.lockERC20Token(
       erc20TokenAddress,
-      ethUserAccount.address,
+      ethUserPrivateKey,
       amount,
       hmyUserAddress
     );
@@ -29,7 +21,38 @@ exports.transferERC20toONE = async function (
 
     await EthFunction.checkBlock(lockedEvent.blockNumber);
 
-    await HmyFunction.unlockOne(price, hmyUserAddress, lockedEvent.transactionHash);
+    await HmyFunction.unlockOne(
+      lockedEvent.argv.amount,
+      lockedEvent.argv.price,
+      hmyUserAddress,
+      lockedEvent.transactionHash
+    );
+
+    process.exit(0);
+  } catch (err) {
+    console.log(err);
+    process.exit(1);
+  }
+};
+
+exports.transferETHtoONE = async function (
+  ethUserPrivateKey, // eth sender
+  hmyUserAddress, // hmy receiver
+  amount
+) {
+  try {
+    let lockedEvent = await EthFunction.lockETH(ethUserPrivateKey, amount, hmyUserAddress);
+
+    console.log(lockedEvent);
+
+    await EthFunction.checkBlock(lockedEvent.blockNumber);
+
+    await HmyFunction.unlockOne(
+      lockedEvent.argv.amount,
+      lockedEvent.argv.price,
+      hmyUserAddress,
+      lockedEvent.transactionHash
+    );
 
     process.exit(0);
   } catch (err) {
