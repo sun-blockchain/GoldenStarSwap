@@ -6,10 +6,27 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import Web3 from 'web3';
 import store from 'store';
 import { setSender, setReceiver, setWeb3 } from 'store/actions.js';
+import { notification } from 'antd';
+
+const openNotification = (message, description) => {
+  notification.open({
+    message: message,
+    description: description,
+    onClick: () => {
+      console.log('Notification Clicked!');
+    }
+  });
+};
 export const connectMetamask = async isSender => {
   // this returns the provider, or null if it wasn't detected
   const provider = await detectEthereumProvider();
   const ethereum = window.ethereum;
+  const web3 = new Web3(window.ethereum);
+  let network = await web3.eth.net.getNetworkType();
+  if (network !== 'ropsten') {
+    openNotification('Network fail', 'Please change to Ropsten testnet');
+    return;
+  }
   if (provider) {
     startApp(provider); // Initialize your app
   } else {
@@ -64,7 +81,7 @@ export const connectMetamask = async isSender => {
   ethereum.on('accountsChanged', handleAccountsChanged);
 
   // For now, 'eth_accounts' will continue to always return an array
-  function handleAccountsChanged(accounts) {
+  async function handleAccountsChanged(accounts) {
     if (accounts.length === 0) {
       // MetaMask is locked or the user has not connected any accounts
       isSender ? store.dispatch(setSender(null)) : store.dispatch(setReceiver(null));
