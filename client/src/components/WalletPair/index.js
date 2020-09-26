@@ -43,12 +43,12 @@ function WalletPair() {
     <div className='wallet-pair'>
       <Row gutter={[8, 8]}>
         <Col span={8} className='wallet-left'>
-          <div>Ethereum</div>
+          <div className='wallet-type'>Ethereum</div>
           {sender}
         </Col>
 
         <Col span={8} offset={7} className='wallet-right'>
-          <div>Harmony</div>
+          <div className='wallet-type'>Harmony</div>
           {receiver}
         </Col>
       </Row>

@@ -11,6 +11,7 @@ function App() {
       <Header>
         <div className='logo'>
           <img src={Logo} alt='logo' width={'80px'}></img>
+          GoldenStar Swap
         </div>
       </Header>
       <MainSwap></MainSwap>
