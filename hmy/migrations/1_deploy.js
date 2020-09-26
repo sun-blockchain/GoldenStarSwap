@@ -1,4 +1,4 @@
-const HmyBridge = artifacts.require('HmyManager');
+const HmyBridge = artifacts.require('HmyBridge');
 
 module.exports = async function (deployer) {
   try {

@@ -18,11 +18,6 @@ contract EthBridge {
     using SafeERC20 for ERC20Detailed;
 
     mapping(bytes32 => bool) public usedEvents_;
-
-    struct ObjERC {
-        address addrERC;
-        address addrOracle;
-    }
     mapping(address => address) public listERC;
     mapping(address => uint256) public wards;
     address public owner;

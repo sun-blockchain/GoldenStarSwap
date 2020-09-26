@@ -5,9 +5,9 @@ const BN = require('bn.js');
 const Web3 = require('web3');
 const web3 = new Web3('https://ropsten.infura.io/v3/' + process.env.INFURA_PROJECT_ID);
 
-const ERC20 = require('./build/contracts/ERC20.json');
+const ERC20 = require('./build/contracts/IERC20.json');
 
-const EthBridge = require('./build/contracts/EthBridge.sol');
+const EthBridge = require('./build/contracts/EthBridge.json');
 const ethBridgeAddress = EthBridge.networks['3'].address;
 const ethBridgeContract = new web3.eth.Contract(EthBridge.abi, ethBridgeAddress);
 
@@ -32,7 +32,9 @@ exports.checkBalanceAndApproveEthManger = async function (
     throw new Error('Your balance not enough to transfer!');
   }
 
-  await erc20Contract.methods.approve(ethManagerAddress, amount).send({
+  // console.log(balance);
+
+  await erc20Contract.methods.approve(ethBridgeAddress, amount).send({
     from: ethUserAccount.address,
     gas: process.env.ETH_GAS_LIMIT,
     gasPrice: new BN(await web3.eth.getGasPrice()).mul(new BN(1))
@@ -78,7 +80,7 @@ exports.lockETH = async function (ethUserPrivateKey, amount, hmyUserAddress) {
       gasPrice: new BN(await web3.eth.getGasPrice()).mul(new BN(1))
     });
 
-    return transaction.events.LockedETH;
+    return transaction.events.Locked;
   } catch (err) {
     throw err;
   }
@@ -89,7 +91,7 @@ exports.checkBlock = async function (blockNumber) {
     let currentBlock = await web3.eth.getBlockNumber();
     if (currentBlock <= blockNumber + BLOCK_TO_FINALITY) {
       console.log(
-        `Currently at block ${blockNumber}, waiting for block ${expectedBlockNumber} to be confirmed`
+        `Currently at block ${currentBlock}, waiting for block ${blockNumber} to be confirmed`
       );
       await sleep(AVG_BLOCK_TIME);
     } else {
