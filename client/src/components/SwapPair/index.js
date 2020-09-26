@@ -22,13 +22,13 @@ function SwapPair() {
   };
   return (
     <div className='swap-pair'>
-      <Divider orientation='left'></Divider>
+      {/* <Divider orientation='left'></Divider> */}
       <Input.Group size='large'>
         <Row gutter={16}>
           <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-            <Divider orientation='left'>Have</Divider>
-            <Row gutter={[8, 8]}>
-              <Col span={12}>
+            <Divider orientation='center'>Have</Divider>
+            <Row className='text-align-center'>
+              <Col className='margin-right-10'>
                 <Select defaultValue='LINK' onChange={changeToken} style={{ width: 120 }}>
                   {Token.map((e, i) => (
                     <Option key={i} value={e.name}>
@@ -37,7 +37,7 @@ function SwapPair() {
                   ))}
                 </Select>
               </Col>
-              <Col span={12}>
+              <Col>
                 <InputNumber
                   style={{
                     width: 250,
@@ -45,6 +45,7 @@ function SwapPair() {
                   }}
                   onChange={changeAmout}
                   size='large'
+                  className='input-border-round'
                 ></InputNumber>
                 <div>
                   <span>Max: {senderBalance}</span>
@@ -53,16 +54,16 @@ function SwapPair() {
             </Row>
           </Col>
 
-          <Col xs={20} sm={16} md={12} lg={8} xl={4}>
-            <Button>
+          <Col xs={20} sm={16} md={12} lg={8} xl={4} className='style-button-swap'>
+            <Button shape='round'>
               <FontAwesomeIcon icon={faExchangeAlt} />
             </Button>
           </Col>
 
           <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-            <Divider orientation='left'>Want</Divider>
-            <Row gutter={[8, 8]}>
-              <Col span={12}>
+            <Divider orientation='center'>Maybe</Divider>
+            <Row className='text-align-center'>
+              <Col className='margin-right-10'>
                 <Select defaultValue='one' style={{ width: 120 }}>
                   <Option value='one'>
                     <img src={OneToken} width={'20px'} alt='one' />
@@ -70,7 +71,7 @@ function SwapPair() {
                   </Option>
                 </Select>
               </Col>
-              <Col span={12}>
+              <Col>
                 <InputNumber
                   style={{
                     width: 250,

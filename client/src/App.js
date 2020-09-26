@@ -2,20 +2,26 @@ import React from 'react';
 import './App.css';
 import { Layout } from 'antd';
 import MainSwap from 'pages/MainSwap';
-import Logo from 'icons/logo.png';
+import Logo from 'icons/5.png';
 import './App.css';
 const { Header, Footer } = Layout;
 function App() {
   return (
-    <Layout>
-      <Header>
+    <Layout className='style-layout'>
+      <div>
+        <div id='stars'></div>
+        <div id='stars2'></div>
+        <div id='stars3'></div>
+        <div id='title'></div>
+      </div>
+      <Header className='style-header'>
         <div className='logo'>
-          <img src={Logo} alt='logo' width={'80px'}></img>
-          GoldenStar Swap
+          <img src={Logo} alt='logo'></img>
+          {/* GoldenStar Swap */}
         </div>
       </Header>
       <MainSwap></MainSwap>
-      <Footer></Footer>
+      <Footer className='style-footer'></Footer>
     </Layout>
   );
 }
