@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Button, Input, Col, Row, Divider, Modal } from 'antd';
+import React from 'react';
+// import { Button, Input, Col, Row, Divider } from 'antd';
+import { Button } from 'antd';
 import { useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExchangeAlt } from '@fortawesome/fontawesome-free-solid';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faExchangeAlt } from '@fortawesome/fontawesome-free-solid';
 import { approve } from 'utils/erc20.js';
 import './index.css';
 function ReceiverSwap() {
@@ -23,9 +24,9 @@ function ReceiverSwap() {
 
   return (
     <div className='receiver-swap'>
-      <Divider orientation='left'>Receiver Address:</Divider>
-      <Row>
-        <Col span={6} offset={1}>
+      {/* <Divider orientation='right'>Receiver Address:</Divider> */}
+      {/* <Row>
+        <Col span={8} offset={14}>
           <Input
             className='receiver-address'
             size='large'
@@ -33,35 +34,13 @@ function ReceiverSwap() {
             value={receiverAddress}
           />
         </Col>
-        <Col span={6} offset={6}>
-          <Button
-            size='large'
-            shape='round'
-            className='btn-swap'
-            disabled={disabledBtn}
-            onClick={() => setVisible(true)}
-          >
-            <label className='swap-label'>Swap</label>{' '}
-            <FontAwesomeIcon className='swap-icon' icon={faExchangeAlt} />
-          </Button>
-        </Col>
-      </Row>
-      <Modal
-        visible={visible}
-        title='Swap'
-        // onOk={this.handleOk}
-        onCancel={() => setVisible(false)}
-        footer={[
-          <Button key='Approve' type='primary' loading={loading} onClick={() => approveErc20()}>
-            Approve
-          </Button>,
-          <Button key='Transfer' type='primary' disabled={true} onClick={() => {}}>
-            Transfer
-          </Button>
-        ]}
-      >
-        <p>Some contents...</p>
-      </Modal>
+      </Row> */}
+      <div className='button-swap'>
+        <Button size='large' shape='round' className='btn-swap' disabled={disabledBtn}>
+          <label className='swap-label'>Swap</label>{' '}
+          {/* <FontAwesomeIcon className='swap-icon' icon={faExchangeAlt} /> */}
+        </Button>
+      </div>
     </div>
   );
 }
