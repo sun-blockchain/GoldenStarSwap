@@ -12,6 +12,8 @@ const { Option } = Select;
 function SwapPair() {
   const dispatch = useDispatch();
   const senderBalance = useSelector(state => state.senderBalance);
+  const receiveAmount = useSelector(state => state.receiveAmount);
+  const sendAmount = useSelector(state => state.sendAmount);
   const changeToken = value => {
     let tokenSender = Token.find(e => e.name === value);
     dispatch(setSenderToken(tokenSender.address));
@@ -20,6 +22,7 @@ function SwapPair() {
   const changeAmout = value => {
     dispatch(setSendAmount(value));
   };
+
   return (
     <div className='swap-pair'>
       {/* <Divider orientation='left'></Divider> */}
@@ -45,6 +48,7 @@ function SwapPair() {
                   }}
                   onChange={changeAmout}
                   size='large'
+                  value={sendAmount}
                   className='input-border-round'
                 ></InputNumber>
                 <div>
@@ -77,9 +81,11 @@ function SwapPair() {
                     width: 250,
                     textAlign: 'center'
                   }}
+                  step='0.001'
                   size='large'
                   disabled
                   bordered={true}
+                  value={receiveAmount}
                 ></InputNumber>
               </Col>
             </Row>

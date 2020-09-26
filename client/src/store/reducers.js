@@ -10,7 +10,8 @@ const initialState = {
 
   receiverAddress: null,
   receiverBalance: 0,
-  receiverType: ''
+  receiverType: '',
+  receiveAmount: 0
 };
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -50,6 +51,13 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         sendAmount: action.sendAmount
       };
+
+    case actions.SET_RECEIVE_AMOUNT:
+      return {
+        ...state,
+        receiveAmount: action.receiveAmount
+      };
+
     default:
       return state;
   }
