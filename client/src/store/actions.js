@@ -63,3 +63,9 @@ export const SET_RECEIVER_BALANCE = 'SET_RECEIVER_BALANCE';
 export const setReceiverBalance = balance => async dispatch => {
   dispatch({ type: SET_RECEIVER_BALANCE, balance });
 };
+
+export const SET_SEND_AMOUNT = 'SET_SEND_AMOUNT';
+export const setSendAmount = sendAmount => async dispatch => {
+  console.log('send', sendAmount);
+  dispatch({ type: SET_SEND_AMOUNT, sendAmount });
+};
