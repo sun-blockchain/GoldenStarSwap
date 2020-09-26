@@ -16,7 +16,6 @@ const options = {
 };
 
 const HmyBridge = require('./build/contracts/HmyBridge.json');
-const { __exportStar } = require('tslib');
 const hmyBridgeAddress = HmyBridge.networks['2'].address;
 
 exports.unlockOne = async function (amountUSD, receiver, receiptId) {
@@ -73,17 +72,6 @@ exports.getOneBalance = async function (hmyUserAddress) {
   } catch (error) {
     console.log(error);
     return error;
-  }
-};
-
-exports.getLatestPrice = async function (oracleAddress) {
-  try {
-    const hmyBridgeContract = hmy.contracts.createContract(HmyBridge.abi, hmyBridgeAddress);
-    let result = await hmyBridgeContract.methods.getLatestPrice(oracleAddress).call(options);
-    console.log(parseInt(result));
-  } catch (err) {
-    console.log(err);
-    throw err;
   }
 };
 

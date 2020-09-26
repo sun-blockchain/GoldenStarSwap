@@ -99,3 +99,16 @@ exports.checkBlock = async function (blockNumber) {
     }
   }
 };
+
+exports.getLatestPriceERC = async oracleAddress => {
+  try {
+    let result = await ethBridgeContract.methods.getLatestPrice(oracleAddress).call();
+    // console.log(result);
+    return result;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+// this.getLatestPriceERC('0xaF540Ca83c7da3181778e3D1E11A6137e7e0085B');

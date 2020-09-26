@@ -1,4 +1,4 @@
-import { balanceOf } from 'utils/erc20';
+import { balanceOf, getLatestPriceERC, getLatestPriceONE } from 'utils/erc20';
 import { Harmony } from '@harmony-js/core';
 import { ChainID, ChainType, fromWei, hexToNumber, Units } from '@harmony-js/utils';
 
@@ -65,7 +65,13 @@ export const setReceiverBalance = balance => async dispatch => {
 };
 
 export const SET_SEND_AMOUNT = 'SET_SEND_AMOUNT';
+export const SET_RECEIVE_AMOUNT = 'SET_RECEIVE_AMOUNT';
 export const setSendAmount = sendAmount => async dispatch => {
-  console.log('send', sendAmount);
+  let priceERC = await getLatestPriceERC('0xaF540Ca83c7da3181778e3D1E11A6137e7e0085B');
+  let priceONE = await getLatestPriceONE('0x05d511aAfc16c7c12E60a2Ec4DbaF267eA72D420');
+
+  let amount = (parseFloat(priceERC) * parseFloat(sendAmount)) / parseFloat(priceONE);
+  console.log(amount.toFixed(3));
+  dispatch({ type: SET_RECEIVE_AMOUNT, receiveAmount: amount.toFixed(3) });
   dispatch({ type: SET_SEND_AMOUNT, sendAmount });
 };
