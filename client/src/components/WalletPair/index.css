@@ -9,3 +9,7 @@
   color: rgba(0, 0, 0, 0.85);
   border-radius: 10px;
 }
+
+.wallet-type {
+  font-weight: bold;
+}

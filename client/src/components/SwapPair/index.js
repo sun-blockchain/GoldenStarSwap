@@ -2,7 +2,7 @@ import React from 'react';
 import { Select, Button, Input, Col, Row, InputNumber, Divider } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExchangeAlt } from '@fortawesome/fontawesome-free-solid';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Token from 'constants/Token.js';
 import OneToken from 'icons/harmony.png';
 import { setSenderToken } from 'store/actions';
@@ -11,7 +11,7 @@ const { Option } = Select;
 
 function SwapPair() {
   const dispatch = useDispatch();
-
+  const senderBalance = useSelector(state => state.senderBalance);
   const changeToken = value => {
     let tokenSender = Token.find(e => e.name === value);
     dispatch(setSenderToken(tokenSender.address));
@@ -39,7 +39,11 @@ function SwapPair() {
                     width: 250,
                     textAlign: 'center'
                   }}
+                  size='large'
                 ></InputNumber>
+                <div>
+                  <span>Max: {senderBalance}</span>
+                </div>
               </Col>
             </Row>
           </Col>
@@ -67,6 +71,9 @@ function SwapPair() {
                     width: 250,
                     textAlign: 'center'
                   }}
+                  size='large'
+                  disabled
+                  bordered={true}
                 ></InputNumber>
               </Col>
             </Row>
