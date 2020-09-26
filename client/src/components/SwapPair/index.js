@@ -5,7 +5,7 @@ import { faExchangeAlt } from '@fortawesome/fontawesome-free-solid';
 import { useDispatch, useSelector } from 'react-redux';
 import Token from 'constants/Token.js';
 import OneToken from 'icons/harmony.png';
-import { setSenderToken } from 'store/actions';
+import { setSenderToken, setSendAmount } from 'store/actions';
 import './index.css';
 const { Option } = Select;
 
@@ -15,6 +15,10 @@ function SwapPair() {
   const changeToken = value => {
     let tokenSender = Token.find(e => e.name === value);
     dispatch(setSenderToken(tokenSender.address));
+  };
+
+  const changeAmout = value => {
+    dispatch(setSendAmount(value));
   };
   return (
     <div className='swap-pair'>
@@ -39,6 +43,7 @@ function SwapPair() {
                     width: 250,
                     textAlign: 'center'
                   }}
+                  onChange={changeAmout}
                   size='large'
                 ></InputNumber>
                 <div>

@@ -6,6 +6,7 @@ const initialState = {
   senderBalance: 0,
   senderType: '',
   senderToken: '0xb4f7332ed719Eb4839f091EDDB2A3bA309739521',
+  sendAmount: 0,
 
   receiverAddress: null,
   receiverBalance: 0,
@@ -42,6 +43,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         receiverBalance: action.balance
+      };
+
+    case actions.SET_SEND_AMOUNT:
+      return {
+        ...state,
+        sendAmount: action.sendAmount
       };
     default:
       return state;
