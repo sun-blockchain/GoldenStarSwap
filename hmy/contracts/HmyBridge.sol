@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 import "@openzeppelin/contracts/math/SafeMath.sol";
 // import "./SafeMath.sol";
 
-import "@chainlink/contracts/src/v0.6/interfaces/AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.5/interfaces/AggregatorInterface.sol";
 
 // import "./AggregatorInterface.sol";
 
@@ -160,6 +160,8 @@ contract HmyBridge {
             return;
         }
         usedEvents_[receiptId] = true;
+        // int256 a = 541000;
+        // uint256 _priceONE = 541000;
         uint256 _priceONE = uint256(getLatestPrice(oracleONE));
         uint256 _amountONE = amountUSD.div(_priceONE);
         recipient.transfer(_amountONE);

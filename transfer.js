@@ -18,15 +18,10 @@ exports.transferERC20toONE = async function (
     );
 
     console.log(lockedEvent);
+    // await EthFunction.checkBlock(lockedEvent.blockNumber);
+    let amountUSD = lockedEvent.returnValues['5'];
 
-    await EthFunction.checkBlock(lockedEvent.blockNumber);
-
-    await HmyFunction.unlockOne(
-      lockedEvent.argv.amount,
-      lockedEvent.argv.price,
-      hmyUserAddress,
-      lockedEvent.transactionHash
-    );
+    await HmyFunction.unlockOne(amountUSD, hmyUserAddress, lockedEvent.transactionHash);
 
     process.exit(0);
   } catch (err) {
@@ -44,15 +39,10 @@ exports.transferETHtoONE = async function (
     let lockedEvent = await EthFunction.lockETH(ethUserPrivateKey, amount, hmyUserAddress);
 
     console.log(lockedEvent);
-
-    await EthFunction.checkBlock(lockedEvent.blockNumber);
-
-    await HmyFunction.unlockOne(
-      lockedEvent.argv.amount,
-      lockedEvent.argv.price,
-      hmyUserAddress,
-      lockedEvent.transactionHash
-    );
+    console.log(lockedEvent);
+    // await EthFunction.checkBlock(lockedEvent.blockNumber);
+    let amountUSD = lockedEvent.returnValues['5'];
+    await HmyFunction.unlockOne(amountUSD, hmyUserAddress, lockedEvent.transactionHash);
 
     process.exit(0);
   } catch (err) {
@@ -60,3 +50,36 @@ exports.transferETHtoONE = async function (
     process.exit(1);
   }
 };
+
+exports.transferONEtoERC20 = async function (
+  hmyUserPrivateKey,
+  erc20TokenAddress,
+  amountONE,
+  ethUserAddress
+) {
+  let lockedEvent = await HmyFunction.lockOne(
+    hmyUserPrivateKey,
+    erc20TokenAddress,
+    amountONE,
+    ethUserAddress
+  );
+};
+
+// exports.getSymbol = async function (address) {
+//   if (address == '0xad6d458402f60fd3bd25163575031acdce07538d') {
+//     return 'DAI';
+//   }
+// };
+
+// this.transferERC20toONE(
+//   '4bbf6348fd657d6dbd5987251f2413d217f7c2601185a6343e87a7c22621d0fe',
+//   '0xc162199cDaeAa5a82f00651dd4536F5d2d4277C5',
+//   '0xad6d458402f60fd3bd25163575031acdce07538d',
+//   '1000000000000000000'
+// );
+
+// this.transferETHtoONE(
+//   '4bbf6348fd657d6dbd5987251f2413d217f7c2601185a6343e87a7c22621d0fe',
+//   '0xc162199cDaeAa5a82f00651dd4536F5d2d4277C5',
+//   '10000000000000000'
+// );
