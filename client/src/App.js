@@ -3,6 +3,7 @@ import './App.css';
 import { Layout } from 'antd';
 import MainSwap from 'pages/MainSwap';
 import Logo from 'icons/logo.png';
+import './App.css';
 const { Header, Footer } = Layout;
 function App() {
   return (
