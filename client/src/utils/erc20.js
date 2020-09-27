@@ -19,8 +19,13 @@ const hmy = new Harmony('https://api.s0.b.hmny.io', {
 
 export const balanceOf = async (tokenAddress, walletAddress) => {
   const web3 = new Web3(window.ethereum);
-  const erc20 = new web3.eth.Contract(ERC20.abi, tokenAddress);
-  const balance = await erc20.methods.balanceOf(walletAddress).call();
+  let balance;
+  if (tokenAddress === '0x0000000000000000000000000000000000000001') {
+    balance = web3.eth.getBalance(walletAddress);
+  } else {
+    const erc20 = new web3.eth.Contract(ERC20.abi, tokenAddress);
+    balance = await erc20.methods.balanceOf(walletAddress).call();
+  }
   return balance;
 };
 
@@ -48,6 +53,34 @@ export const transferERC20ToONE = async (
       gas: process.env.ETH_GAS_LIMIT,
       gasPrice: new BN(await web3.eth.getGasPrice()).mul(new BN(1))
     });
+  let amountUSD = transaction.events.Locked.returnValues['5'];
+  let receiptId = transaction.events.Locked.transactionHash;
+
+  const hmyBridgeContract = hmy.contracts.createContract(
+    HmyBridge.abi,
+    HmyBridge.networks['2'].address
+  );
+  hmyBridgeContract.wallet.addByPrivateKey(process.env.REACT_APP_HMY_OPERATOR_PRIVATE_KEY);
+
+  const unlockTx = hmy.transactions.newTx({
+    to: HmyBridge.networks['2'].address
+  });
+
+  await hmyBridgeContract.wallet.signTransaction(unlockTx);
+  await hmyBridgeContract.methods.unlockOne(amountUSD, hmyUserAddress, receiptId).send(options);
+};
+
+export const transferETHToONE = async (ethUserAddress, amount, receiverAddress) => {
+  const web3 = new Web3(window.ethereum);
+  const ethBridgeContract = new web3.eth.Contract(EthBridge.abi, EthBridge.networks['3'].address);
+  let hmyUserAddress = await hmy.crypto.getAddress(receiverAddress).checksum;
+
+  let transaction = await ethBridgeContract.methods.lockEth(amount, hmyUserAddress).send({
+    from: ethUserAddress,
+    value: amount,
+    gas: process.env.ETH_GAS_LIMIT,
+    gasPrice: new BN(await web3.eth.getGasPrice()).mul(new BN(1))
+  });
   let amountUSD = transaction.events.Locked.returnValues['5'];
   let receiptId = transaction.events.Locked.transactionHash;
 

@@ -16,7 +16,7 @@ function SwapPair() {
   const sendAmount = useSelector(state => state.sendAmount);
   const changeToken = value => {
     let tokenSender = Token.find(e => e.name === value);
-    dispatch(setSenderToken(tokenSender.address));
+    dispatch(setSenderToken(tokenSender.address, tokenSender.oracleAddress));
   };
 
   const changeAmout = value => {

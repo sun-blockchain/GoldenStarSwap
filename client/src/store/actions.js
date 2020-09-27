@@ -43,8 +43,10 @@ export const setWeb3 = web3 => async dispatch => {
 };
 
 export const SET_SENDER_TOKEN = 'SET_SENDER_TOKEN';
-export const setSenderToken = tokenAddress => async (dispatch, getState) => {
+export const SET_ORACLE_ADDRESS = 'SET_ORACLE_ADDRESS';
+export const setSenderToken = (tokenAddress, oracleAddress) => async (dispatch, getState) => {
   dispatch({ type: SET_SENDER_TOKEN, tokenAddress });
+  dispatch({ type: SET_ORACLE_ADDRESS, oracleAddress });
   const state = getState();
   const senderAddress = state.senderAddress;
   if (senderAddress) {
@@ -66,8 +68,9 @@ export const setReceiverBalance = balance => async dispatch => {
 
 export const SET_SEND_AMOUNT = 'SET_SEND_AMOUNT';
 export const SET_RECEIVE_AMOUNT = 'SET_RECEIVE_AMOUNT';
-export const setSendAmount = sendAmount => async dispatch => {
-  let priceERC = await getLatestPriceERC('0xaF540Ca83c7da3181778e3D1E11A6137e7e0085B');
+export const setSendAmount = sendAmount => async (dispatch, getState) => {
+  const state = getState();
+  let priceERC = await getLatestPriceERC(state.oracleAddress);
   let priceONE = await getLatestPriceONE('0x05d511aAfc16c7c12E60a2Ec4DbaF267eA72D420');
 
   let amount = (parseFloat(priceERC) * parseFloat(sendAmount)) / parseFloat(priceONE);
