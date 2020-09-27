@@ -35,6 +35,11 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         senderToken: action.tokenAddress
       };
+    case actions.SET_ORACLE_ADDRESS:
+      return {
+        ...state,
+        oracleAddress: action.oracleAddress
+      };
     case actions.SET_SENDER_BALANCE:
       return {
         ...state,
