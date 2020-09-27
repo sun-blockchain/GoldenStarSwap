@@ -4,6 +4,7 @@ import { Button, Modal } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { approve, transferERC20ToONE } from 'utils/erc20.js';
 import { setSender, setReceiver, setSendAmount } from '../../store/actions';
+import Token from 'constants/Token.js';
 import './index.css';
 
 function ReceiverSwap() {
@@ -13,7 +14,10 @@ function ReceiverSwap() {
   const senderAddress = useSelector(state => state.senderAddress);
   const sendAmount = useSelector(state => state.sendAmount);
   const senderToken = useSelector(state => state.senderToken);
+  const receiveAmount = useSelector(state => state.receiveAmount);
   let disabledBtn = !(senderAddress && receiverAddress);
+
+  const token = Token.find(e => e.address === senderToken);
 
   const [loadingApprove, setLoadingApprove] = useState(false);
   const [statusApprove, setStatusApprove] = useState(true);
@@ -99,8 +103,16 @@ function ReceiverSwap() {
         ]}
       >
         <p>
-          {statusApprove ? 'Do you want approve' : ''}
-          {statusTransfer ? 'Do you want transfer' : ''}
+          {statusApprove ? 'You must approve to send ' + token.name + ' ?' : ''}
+          {statusTransfer
+            ? 'Do you want transfer ' +
+              sendAmount +
+              ' ' +
+              token.name +
+              ' to ' +
+              receiveAmount +
+              ' One ?'
+            : ''}
         </p>
       </Modal>
     </div>
